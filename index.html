@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)file:///C:/Users/eoati/Downloads/protocolo_caliper_eco_fetal_1.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocolo Caliper — Ecocardiograma Fetal</title>
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1117;
+    --bg2: #161b26;
+    --bg3: #1e2535;
+    --surface: #232d42;
+    --border: rgba(255,255,255,0.08);
+    --border-active: rgba(255,255,255,0.18);
+    --text: #e8eaf0;
+    --muted: #8a92a6;
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.12);
+    --teal-border: rgba(45,212,191,0.3);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.1);
+    --blue-border: rgba(96,165,250,0.3);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.1);
+    --purple-border: rgba(167,139,250,0.3);
+    --coral: #fb923c;
+    --coral-dim: rgba(251,146,60,0.1);
+    --coral-border: rgba(251,146,60,0.3);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251,191,36,0.08);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.08);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.08);
+    --radius: 10px;
+    --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, #0e1117 0%, #161b26 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 200px;
+    background: radial-gradient(ellipse, rgba(45,212,191,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .logo-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--teal-dim); border: 1px solid var(--teal-border);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--teal); text-transform: uppercase; margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 400; color: var(--text); line-height: 1.2;
+  }
+  header p {
+    margin-top: 8px; color: var(--muted); font-size: 13px;
+  }
+  .stats-row {
+    display: flex; justify-content: center; gap: 24px; margin-top: 20px; flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 16px; font-size: 12px; color: var(--muted);
+  }
+  .stat strong { color: var(--text); font-weight: 600; display: block; font-size: 15px; }
+
+  /* ── Search bar ── */
+  .search-wrap {
+    max-width: 660px; margin: 20px auto 0;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 16px 10px 40px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color var(--transition);
+  }
+  .search-wrap input:focus { border-color: var(--teal-border); }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
+
+  /* ── Layout ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 16px 60px; }
+
+  /* ── Progress tracker ── */
+  .progress-bar-wrap {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 20px; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .progress-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .progress-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+  .progress-count { font-size: 12px; color: var(--teal); font-weight: 600; white-space: nowrap; }
+
+  /* ── Seção ── */
+  .section-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 0 4px; margin: 28px 0 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ── Accordion item ── */
+  .item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    transition: border-color var(--transition);
+    overflow: hidden;
+  }
+  .item.open { border-color: var(--border-active); }
+  .item:hover { border-color: var(--border-active); }
+
+  /* Color variants */
+  .item.teal { --accent: var(--teal); --accent-dim: var(--teal-dim); --accent-border: var(--teal-border); }
+  .item.blue  { --accent: var(--blue); --accent-dim: var(--blue-dim); --accent-border: var(--blue-border); }
+  .item.purple { --accent: var(--purple); --accent-dim: var(--purple-dim); --accent-border: var(--purple-border); }
+  .item.coral { --accent: var(--coral); --accent-dim: var(--coral-dim); --accent-border: var(--coral-border); }
+  .item.amber { --accent: var(--amber); --accent-dim: var(--amber-dim); --accent-border: rgba(251,191,36,0.25); }
+  .item.green { --accent: var(--green); --accent-dim: var(--green-dim); --accent-border: rgba(74,222,128,0.25); }
+
+  .item.open { border-color: var(--accent-border); }
+
+  .item-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; cursor: pointer;
+    background: var(--bg2);
+    transition: background var(--transition);
+    user-select: none;
+  }
+  .item.open .item-header { background: var(--accent-dim); }
+  .item-header:hover { background: var(--bg3); }
+  .item.open .item-header:hover { background: var(--accent-dim); }
+
+  .item-num {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: var(--accent-dim); border: 1px solid var(--accent-border);
+    color: var(--accent); font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .item-title-wrap { flex: 1; min-width: 0; }
+  .item-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .item-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .item-time {
+    font-size: 11px; color: var(--muted); background: var(--bg3);
+    border: 1px solid var(--border); border-radius: 5px;
+    padding: 2px 8px; flex-shrink: 0; font-variant-numeric: tabular-nums;
+  }
+  .item-chevron {
+    width: 18px; height: 18px; color: var(--muted);
+    transition: transform var(--transition);
+    flex-shrink: 0;
+  }
+  .item.open .item-chevron { transform: rotate(180deg); color: var(--accent); }
+
+  /* ── Body ── */
+  .item-body {
+    display: none; padding: 0 18px 18px 58px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+  }
+  .item.open .item-body { display: block; }
+
+  /* Body blocks */
+  .block { margin-top: 16px; }
+  .block-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .block-grid {
+    display: grid; gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .chip {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 7px; padding: 8px 12px;
+    font-size: 13px; color: var(--text);
+  }
+  .chip.accent { border-color: var(--accent-border); background: var(--accent-dim); color: var(--text); }
+  .chip strong { color: var(--accent); font-weight: 600; }
+  .chip small { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  ul.lista { padding-left: 0; list-style: none; }
+  ul.lista li {
+    padding: 5px 0 5px 16px; position: relative; font-size: 13px; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  ul.lista li:last-child { border-bottom: none; }
+  ul.lista li::before {
+    content: ''; position: absolute; left: 0; top: 13px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); opacity: 0.7;
+  }
+  ul.lista li strong { color: var(--text); font-weight: 500; }
+
+  .alert {
+    border-radius: 7px; padding: 10px 14px;
+    font-size: 13px; margin-top: 8px;
+    border-left: 3px solid;
+  }
+  .alert.warn { background: var(--amber-dim); border-color: var(--amber); color: var(--muted); }
+  .alert.danger { background: var(--red-dim); border-color: var(--red); color: var(--muted); }
+  .alert.ok { background: var(--green-dim); border-color: var(--green); color: var(--muted); }
+  .alert.info { background: var(--blue-dim); border-color: var(--blue); color: var(--muted); }
+  .alert strong { font-weight: 600; }
+  .alert.warn strong { color: var(--amber); }
+  .alert.danger strong { color: var(--red); }
+  .alert.ok strong { color: var(--green); }
+  .alert.info strong { color: var(--blue); }
+
+  /* Sub-accordions (nível 2) */
+  .sub-item {
+    border: 1px solid var(--border); border-radius: 7px;
+    margin-top: 8px; overflow: hidden;
+  }
+  .sub-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; cursor: pointer;
+    background: var(--bg3); font-size: 13px; font-weight: 500;
+    color: var(--muted); user-select: none;
+    transition: all var(--transition);
+  }
+  .sub-header:hover { color: var(--text); }
+  .sub-item.open .sub-header { color: var(--accent); background: var(--accent-dim); }
+  .sub-chevron {
+    width: 14px; height: 14px; margin-left: auto;
+    transition: transform var(--transition);
+  }
+  .sub-item.open .sub-chevron { transform: rotate(180deg); }
+  .sub-body {
+    display: none; padding: 12px 14px;
+    background: var(--bg3); border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .sub-item.open .sub-body { display: block; }
+
+  /* Tags de referência */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 8px;
+    font-size: 11px; color: var(--muted);
+  }
+
+  /* Tabela */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  th { background: var(--bg3); padding: 7px 10px; text-align: left; color: var(--muted); font-weight: 600; font-size: 11px; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  td.accent { color: var(--accent); font-weight: 500; }
+
+  /* Footer */
+  footer {
+    text-align: center; padding: 24px; color: var(--muted);
+    font-size: 12px; border-top: 1px solid var(--border);
+  }
+
+  /* Hidden by search */
+  .item.hidden { display: none; }
+
+  @media (max-width: 600px) {
+    .item-body { padding-left: 18px; }
+    .block-grid { grid-template-columns: 1fr; }
+    .stats-row { gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-tag">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+    Caliper Escola de Imagem
+  </div>
+  <h1>Protocolo de Ecocardiograma Fetal</h1>
+  <p>Prof. Talita Aires &amp; Prof. Karla Pedrosa · Programa de Treinamento em Ecocardiografia Fetal</p>
+  <div class="stats-row">
+    <div class="stat"><strong>1:03h</strong> duração</div>
+    <div class="stat"><strong>13</strong> janelas / etapas</div>
+    <div class="stat"><strong>2º–3º trimestre</strong> indicação principal</div>
+    <div class="stat"><strong>Modo B + Doppler</strong> modalidades</div>
+  </div>
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+    <input type="text" id="search" placeholder="Buscar janela, estrutura ou achado…" oninput="filterItems(this.value)">
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <span class="progress-label">Tópicos visualizados</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-count" id="progressCount">0 / 13</span>
+  </div>
+
+  <!-- ═══════════════════════════════════ INTRODUÇÃO ═══════════════════════════════════ -->
+  <div class="section-label">Introdução ao protocolo</div>
+
+  <!-- 1. Importância -->
+  <div class="item teal" data-search="importância cardiopatia congênita diagnóstico pré-natal incidência prevalência">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">1</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Importância do ecocardiograma fetal</div>
+        <div class="item-sub">Por que realizar · Impacto clínico</div>
+      </div>
+      <span class="item-time">1:04</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Contexto epidemiológico</div>
+        <div class="block-grid">
+          <div class="chip accent"><strong>8–10 / 1.000</strong><small>incidência de cardiopatias congênitas em nascidos vivos</small></div>
+          <div class="chip accent"><strong>Causa nº 1</strong><small>de mortalidade por malformação congênita no RN</small></div>
+          <div class="chip accent"><strong>30–40%</strong><small>das cardiopatias são complexas ou críticas</small></div>
+          <div class="chip accent"><strong>Diagnóstico pré-natal</strong><small>muda desfecho e planejamento perinatal</small></div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">Impacto do diagnóstico pré-natal</div>
+        <ul class="lista">
+          <li><strong>Planejamento do parto:</strong> definir local (hospital terciário com cardiologia pediátrica)</li>
+          <li><strong>Aconselhamento familiar:</strong> preparação emocional e logística</li>
+          <li><strong>Intervenção fetal:</strong> em casos selecionados (p. ex. estenose aórtica crítica)</li>
+          <li><strong>Redução da mortalidade neonatal precoce</strong> nas cardiopatias canal-dependentes</li>
+          <li><strong>Avaliação de arritmias fetais</strong> e decisão de tratamento materno</li>
+        </ul>
+      </div>
+      <div class="alert ok"><strong>Princípio-chave:</strong> o diagnóstico pré-natal não cura, mas permite que o RN chegue ao parto estável, no lugar certo, com a equipe certa.</div>
+    </div>
+  </div>
+
+  <!-- 2. Para quem é indicado -->
+  <div class="item teal" data-search="indicação risco rastreamento triagem morfológico quem pedir quem encaminhar">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">2</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Para quem é indicado?</div>
+        <div class="item-sub">Indicações de alto e baixo risco · Rastreamento universal</div>
+      </div>
+      <span class="item-time">1:39</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Indicações maternas</div>
+        <ul class="lista">
+          <li><strong>Cardiopatia congênita materna</strong> (risco aumentado 5–10×)</li>
+          <li><strong>Diabetes mellitus pré-gestacional</strong> (HbA1c elevada → cardiopatia hipertrófica, TGA)</li>
+          <li><strong>Lúpus / Sjögren:</strong> anticorpos anti-Ro/La → bloqueio AV congênito</li>
+          <li><strong>Uso de teratógenos:</strong> ácido valproico, lítio, isotretinoína, fenitoína</li>
+          <li><strong>Fenilcetonúria materna não tratada</strong></li>
+          <li><strong>Rubéola no 1º trimestre</strong></li>
+          <li><strong>FIV / ICSI:</strong> discretamente maior prevalência de cardiopatias</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Indicações fetais</div>
+        <ul class="lista">
+          <li><strong>Alteração na visão de 4 câmaras</strong> no ultrassom morfológico</li>
+          <li><strong>Translucência nucal ≥ 3,5 mm</strong> no 1º trimestre</li>
+          <li><strong>Aneuploidias:</strong> T21, T18, T13, 22q11, Turner (45,X)</li>
+          <li><strong>Hidropisia fetal não imune</strong></li>
+          <li><strong>Arritmia fetal</strong> detectada no pré-natal</li>
+          <li><strong>RCIU precoce</strong> e/ou severo</li>
+          <li><strong>Gemelaridade monocoriônica</strong> (STFF)</li>
+          <li><strong>Cardiopatia congênita em irmão</strong> (risco ~3%)</li>
+          <li><strong>Cardiopatia em pai biológico</strong> (risco ~3–4%)</li>
+        </ul>
+      </div>
+      <div class="alert info"><strong>Nota sobre rastreamento:</strong> a visão de 4 câmaras no morfológico do 2º tri detecta ~40–50% das cardiopatias. Com adição das vias de saída, a sensibilidade sobe para ~70–80%. O eco fetal dedicado, nas indicações acima, pode chegar a &gt;90%.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ JANELAS PRINCIPAIS ═══════════════════════════════════ -->
+  <div class="section-label">Janelas cardíacas principais — modo B + Doppler colorido</div>
+
+  <!-- 3. Quatro câmaras -->
+  <div class="item teal" data-search="quatro câmaras 4 câmaras visão morfologia eixo cardíaco situs foramen oval">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">3</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Visão de quatro câmaras</div>
+        <div class="item-sub">Janela obrigatória · Modo B + Doppler colorido</div>
+      </div>
+      <span class="item-time">5:55</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">O que avaliar — checklist</div>
+        <div class="block-grid">
+          <div class="chip"><strong>Situs</strong><small>coração à esquerda (levocardia normal)</small></div>
+          <div class="chip"><strong>Eixo cardíaco</strong><small>45° ± 20° (30–60°) em relação ao esterno</small></div>
+          <div class="chip"><strong>Tamanho cardíaco</strong><small>1/3 da área do tórax (relação CT/T &lt;0,5)</small></div>
+          <div class="chip"><strong>Simetria de câmaras</strong><small>VD ≈ VE; AD ≈ AE (razão &lt;1,6)</small></div>
+          <div class="chip"><strong>Septo interventricular</strong><small>integridade — sem defeitos aparentes</small></div>
+          <div class="chip"><strong>Septo interatrial</strong><small>forame oval patente (normal no feto)</small></div>
+          <div class="chip"><strong>Valva mitral</strong><small>inserção mais alta — câmara esquerda</small></div>
+          <div class="chip"><strong>Valva tricúspide</strong><small>inserção mais baixa — câmara direita</small></div>
+          <div class="chip"><strong>Veia pulmonar</strong><small>pelo menos 1 abrindo no AE</small></div>
+          <div class="chip"><strong>Veia cava inferior</strong><small>drenagem no AD pelo lado direito</small></div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">Doppler colorido na visão de 4 câmaras</div>
+        <ul class="lista">
+          <li><strong>Fluxo nas valvas AV:</strong> confirmar abertura e ausência de regurgitação significativa</li>
+          <li><strong>Forame oval:</strong> fluxo da direita para esquerda (fisiológico)</li>
+          <li><strong>Verificar assimetria de fluxo:</strong> suspeita de CIV ou comunicação</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Achados suspeitos</div>
+
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            Eixo cardíaco alterado (dextrocardia / mesocardia)
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Eixo &gt;60°: pensar em massa pulmonar esquerda (sequestro, MCPE), hérnia diafragmática esquerda</li>
+              <li>Eixo &lt;30° ou dextrocardia: inverso de situs, hérnia diafragmática direita, massa direita</li>
+              <li>Sempre avaliar situs abdominal (posição estômago/fígado) em conjunto</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            Assimetria de câmaras (câmara dominante)
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li><strong>VD &gt;&gt; VE:</strong> estenose pulmonar/aórtica severa, CoAo, SHCE, retorno venoso anômalo pulmonar total</li>
+              <li><strong>VE &gt;&gt; VD:</strong> obstrução à saída direita, atresia pulmonar</li>
+              <li>Sempre correlacionar com a visão das vias de saída antes de concluir</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path></svg>
+            CIV (comunicação interventricular)
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Interrupção do septo na zona muscular ou perimembranosa</li>
+              <li>Doppler colorido mostra fluxo cruzando o septo</li>
+              <li>CIVs pequenas podem não ser vistas no feto — resolução do eco fetal é limitada</li>
+              <li>CIVs musculares de apêndice têm alta taxa de fechamento espontâneo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Doppler pulsado valvas AV -->
+  <div class="item teal" data-search="doppler pulsado valva mitral tricúspide atrioventricular onda E A relação regurgitação">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">4</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Doppler pulsado — valvas atrioventriculares</div>
+        <div class="item-sub">Mitral e tricúspide · Ondas E e A · Relação E/A</div>
+      </div>
+      <span class="item-time">8:54</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Técnica de aquisição</div>
+        <ul class="lista">
+          <li><strong>Visão ideal:</strong> 4 câmaras apical ou basal, valva perpendicular ao feixe</li>
+          <li><strong>Gate (mitral):</strong> no VE, apical à valva; gate (tricúspide): no VD, apical à valva</li>
+          <li><strong>Tamanho do gate:</strong> 2 mm no 2º tri / 3–4 mm no 3º tri</li>
+          <li><strong>Ativar Doppler colorido</strong> e posicionar o gate no ponto de maior brilho</li>
+          <li><strong>Ângulo de insonação:</strong> &lt;15° preferível; até 30° com correção</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Forma de onda e componentes</div>
+        <div class="block-grid">
+          <div class="chip accent"><strong>Onda E</strong><small>enchimento diastólico precoce passivo (AE → VE)</small></div>
+          <div class="chip accent"><strong>Onda A</strong><small>enchimento diastólico tardio por contração atrial</small></div>
+          <div class="chip"><strong>E/A &lt; 1</strong><small>padrão normal no feto (dominância da onda A)</small></div>
+          <div class="chip"><strong>Onda S (mitral)</strong><small>fluxo aórtico visível oposto às ondas E/A</small></div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">Valores normais — relação E/A</div>
+        <table>
+          <tbody><tr><th>Trimestre</th><th>E/A mitral</th><th>E/A tricúspide</th></tr>
+          <tr><td>2º trimestre</td><td>0,50–0,75</td><td>0,45–0,65</td></tr>
+          <tr><td>3º trimestre</td><td>0,60–0,85</td><td>0,55–0,75</td></tr>
+          <tr><td>Próximo ao termo</td><td>↑ gradualmente</td><td>↑ gradualmente</td></tr>
+        </tbody></table>
+        <div class="alert info" style="margin-top:8px"><strong>Fisiologia:</strong> no feto, a complacência ventricular é menor — o enchimento ativo (onda A) predomina. A E/A vai aumentando com a maturação miocárdica ao longo da gestação.</div>
+      </div>
+      <div class="block">
+        <div class="block-title">Achados patológicos</div>
+        <ul class="lista">
+          <li><strong>Inversão E/A &gt;1:</strong> disfunção diastólica, cardiomiopatia, hidropisia</li>
+          <li><strong>Regurgitação tricúspide significativa:</strong> pressão sistólica elevada, Ebstein, cardiopatia complexa</li>
+          <li><strong>RT leve (&lt;1 cm, &lt;50% da sístole):</strong> pode ser variante normal no 1º trimestre</li>
+          <li><strong>Mitral flow ausente:</strong> SHCE com mitral atrésica</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Veias pulmonares -->
+  <div class="item blue" data-search="veias pulmonares confluência drenagem RVAPT retorno venoso anomalia pulmonar">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">5</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Veias pulmonares</div>
+        <div class="item-sub">Confluência · Drenagem no AE · Doppler colorido</div>
+      </div>
+      <span class="item-time">9:58</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">O que visualizar</div>
+        <ul class="lista">
+          <li><strong>Pelo menos 1–2 veias pulmonares</strong> drenando diretamente no AE</li>
+          <li>Visão ideal: corte axial do tórax na altura do AE com leve angulação posterior</li>
+          <li>Com Doppler colorido: fluxo em direção ao AE (vermelho ou azul, dependendo do ângulo)</li>
+          <li>Verificar simetria das veias pulmonares direitas e esquerdas</li>
+          <li>Doppler pulsado opcional: perfil de fluxo (onda S, D e fluxo reverso atrial)</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Achados patológicos</div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path></svg>
+            RVAPT — Retorno Venoso Anômalo Pulmonar Total
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Nenhuma veia pulmonar drena no AE — AE pequeno</li>
+              <li>Veias confluem em coletor posterior e drenam em VCS, VCI, seio coronário ou veia porta</li>
+              <li>Suspeita no eco fetal: AE pequeno + ausência de veias pulmonares visíveis no AE</li>
+              <li>Diagnóstico confirmatório difícil no eco fetal; suspeita é suficiente para encaminhar</li>
+              <li>Forma obstrutiva: emergência neonatal com cianose intensa ao nascimento</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            Veia ázigos dilatada (22:27 no vídeo)
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Veia ázigos visível junto à aorta descendente no corte transverso alto do tórax</li>
+              <li>Dilatação da veia ázigos: marker de interrupção da VCI com continuação pela ázigos</li>
+              <li>Associada a isomerismo de átrio esquerdo (poliesplenia), heterotaxia</li>
+              <li>Sinal de "dupla aorta" no Doppler colorido: aorta + ázigos no mesmo corte</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Via de saída do VD -->
+  <div class="item teal" data-search="via saída VD ventrículo direito pulmonar tronco pulmonar valva pulmonar estenose atresia">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">6</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Via de saída do VD (pulmonar)</div>
+        <div class="item-sub">Tronco pulmonar · Valva pulmonar · Bifurcação</div>
+      </div>
+      <span class="item-time">11:52</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">O que avaliar</div>
+        <ul class="lista">
+          <li><strong>Origem:</strong> pulmonar nasce do VD (câmara anterior/direita)</li>
+          <li><strong>Direção:</strong> cruza a aorta (mais posterior), segue para trás e para a esquerda</li>
+          <li><strong>Calibre:</strong> tronco pulmonar ligeiramente maior que a aorta ascendente no feto (normal)</li>
+          <li><strong>Bifurcação:</strong> visualizar artéria pulmonar direita e esquerda</li>
+          <li><strong>Valva pulmonar:</strong> mobilidade, espessura, ausência de obstrução</li>
+          <li><strong>Doppler colorido:</strong> confirmar fluxo anterógrado e ausência de turbulência</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Achados suspeitos</div>
+        <div class="block-grid">
+          <div class="chip"><strong>Estenose pulmonar</strong><small>valva espessada, fluxo turbulento, tronco pós-estenótico dilatado</small></div>
+          <div class="chip"><strong>Atresia pulmonar</strong><small>ausência de fluxo anterógrado, VD pequeno ou grande (depend. do septo)</small></div>
+          <div class="chip"><strong>Tronco pulmonar estreito</strong><small>suspeitar de estenose pulmonar supravalvar ou hipoplasia</small></div>
+          <div class="chip"><strong>TGA</strong><small>pulmonar nasce do VE → confirmar cruzamento das artérias</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Cruzamento das grandes artérias -->
+  <div class="item teal" data-search="cruzamento grandes artérias aorta pulmonar TGA transposição normalidade eixo">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">7</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Cruzamento das grandes artérias</div>
+        <div class="item-sub">Relação espacial Ao × AP · Confirmação de cruzamento</div>
+      </div>
+      <span class="item-time">12:47</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Normal — o cruzamento</div>
+        <ul class="lista">
+          <li>Aorta e pulmonar <strong>se cruzam em ângulo de ~90°</strong> — característica exclusiva da normalidade</li>
+          <li>Aorta nasce <strong>posterior e à direita</strong> (do VE); pulmonar nasce <strong>anterior e à esquerda</strong> (do VD)</li>
+          <li>Na visão de 3 vasos, a Ao aparece posterior e menor; AP anterior e maior</li>
+          <li>Confirmar com visão longitudinal: as artérias "se abraçam" — um sinal clássico</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">TGA — o que muda</div>
+        <div class="alert danger"><strong>Transposição das grandes artérias (TGA):</strong> as artérias seguem paralelas, sem cruzamento. Aorta à frente e à direita (nasce do VD); pulmonar atrás (nasce do VE). É uma das cardiopatias mais comuns não detectadas no morfológico, pois a visão de 4 câmaras pode ser NORMAL.</div>
+      </div>
+      <div class="block">
+        <div class="block-title">Variantes e correlações</div>
+        <ul class="lista">
+          <li><strong>DVSVD (dupla via de saída do VD):</strong> ambas as artérias nascem do VD; relação variável</li>
+          <li><strong>Truncus arteriosus:</strong> apenas 1 artéria nasce do coração; sem cruzamento possível</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ AVALIAÇÃO VASCULAR ═══════════════════════════════════ -->
+  <div class="section-label">Avaliação vascular — grandes vasos e arcos</div>
+
+  <!-- 8. Visão transversa do arco aórtico -->
+  <div class="item blue" data-search="arco aórtico visão transversa 3 vasos istmo calibre coarctação hipoplasia">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">8</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Visão transversa do arco aórtico</div>
+        <div class="item-sub">Visão de 3 vasos · Istmo aórtico · Ducto arterioso</div>
+      </div>
+      <span class="item-time">17:54</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Visão de 3 vasos (3VT)</div>
+        <ul class="lista">
+          <li>Corte transverso do tórax superior: AP + ducto / Ao + VCS — da esquerda para direita</li>
+          <li><strong>Tamanho relativo normal:</strong> AP ≥ Ao &gt; VCS (da maior para menor, da esq para dir)</li>
+          <li><strong>Alinhamento normal:</strong> os 3 vasos formam linha curva; verifique isomerismo se desalinhados</li>
+          <li><strong>Com Doppler colorido:</strong> AP e Ao em azul (fluxo para longe) ou vermelho (depende do ângulo)</li>
+          <li>Ducto arterioso conecta AP à aorta descendente — fluxo contínuo fisiológico no feto</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Coarctação de aorta (CoAo) — rastreamento</div>
+        <div class="alert warn"><strong>CoAo:</strong> maior causa de cardiopatia canal-dependente. No feto, a CoAo se manifesta como <strong>assimetria de câmaras</strong> (VD dominante) + <strong>istmo aórtico estreito</strong> na visão de 3 vasos. A sensibilidade do eco fetal para CoAo é em torno de 50–60% — rastreio de achados indiretos é fundamental.</div>
+        <ul class="lista" style="margin-top:8px">
+          <li><strong>Achados indiretos:</strong> VD maior que VE, aorta ascendente menor que o esperado, istmo estreito (&lt;z-score -2)</li>
+          <li><strong>Doppler no istmo:</strong> fluxo reverso ou muito reduzido na sístole = sinal de alerta</li>
+          <li><strong>Armadilha:</strong> CoAo pode ser "fisiológica" no feto e aparecer pós-natal — seguimento pós-parto em suspeita</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Arco aórtico direito / duplo arco</div>
+        <ul class="lista">
+          <li>Arco aórtico à direita: Ao cruza para a direita da traqueia — visão de 3 vasos mostra inversão</li>
+          <li>Frequentemente associado a 22q11 (síndrome de DiGeorge) e TOF</li>
+          <li>Duplo arco aórtico: ambos os arcos visíveis formando anel vascular (pode causar disfagia/estridor pós-natal)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ DOPPLER SEMILUNARES ═══════════════════════════════════ -->
+  <div class="section-label">Doppler pulsado — valvas semilunares</div>
+
+  <!-- 9. Doppler pulsado valva aórtica -->
+  <div class="item purple" data-search="doppler pulsado valva aórtica velocidade pico estenose aórtica regurgitação aórtica">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">9</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Doppler pulsado — valva aórtica</div>
+        <div class="item-sub">Via de saída do VE · Velocidade de pico · Regurgitação</div>
+      </div>
+      <span class="item-time">~20:00</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Técnica</div>
+        <ul class="lista">
+          <li><strong>Visão:</strong> 5 câmaras → inclinar lateralmente até valva aórtica perpendicular ao feixe</li>
+          <li><strong>Gate:</strong> distal à valva aórtica, no início da aorta ascendente</li>
+          <li><strong>Tamanho do gate:</strong> 2 mm (2T) / 3–4 mm (3T)</li>
+          <li><strong>Doppler colorido:</strong> gate no ponto de maior brilho</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Valores de referência</div>
+        <table>
+          <tbody><tr><th>Trimestre</th><th>Velocidade pico sistólico</th><th>Limite de alerta</th></tr>
+          <tr><td>1º tri</td><td>30–40 cm/s</td><td class="accent">&gt; 120 cm/s</td></tr>
+          <tr><td>2º tri</td><td>50–70 cm/s</td><td class="accent">&gt; 120 cm/s</td></tr>
+          <tr><td>3º tri</td><td>60–80 cm/s</td><td class="accent">&gt; 120 cm/s</td></tr>
+        </tbody></table>
+      </div>
+      <div class="block">
+        <div class="block-title">Interpretação</div>
+        <ul class="lista">
+          <li><strong>Padrão normal:</strong> monofásico, sem fluxo diastólico (diferente das AV valves)</li>
+          <li><strong>Velocidade &gt; 120 cm/s:</strong> suspeita de estenose aórtica → avaliar gradiente</li>
+          <li><strong>Fluxo abaixo da linha de base:</strong> regurgitação aórtica</li>
+          <li><strong>Velocidade baixa + VE pequeno:</strong> SHCE ou estenose crítica com baixo débito</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Doppler pulsado valva pulmonar -->
+  <div class="item purple" data-search="doppler pulsado valva pulmonar estenose pulmonar atresia pulmonar velocidade tronco">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">10</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Doppler pulsado — valva pulmonar</div>
+        <div class="item-sub">Via de saída do VD · Velocidade · Comparação com aórtica</div>
+      </div>
+      <span class="item-time">~21:00</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Técnica</div>
+        <ul class="lista">
+          <li><strong>Visão:</strong> via de saída do VD — artéria pulmonar perpendicular ao feixe</li>
+          <li><strong>Gate:</strong> distal à valva pulmonar, no tronco pulmonar</li>
+          <li>Mesmo tamanho de gate que para a aórtica</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Valores de referência</div>
+        <table>
+          <tbody><tr><th>Trimestre</th><th>Velocidade pico sistólico</th></tr>
+          <tr><td>1º tri</td><td>30–40 cm/s</td></tr>
+          <tr><td>2º tri</td><td>40–60 cm/s</td></tr>
+          <tr><td>3º tri</td><td>50–70 cm/s</td></tr>
+        </tbody></table>
+        <div class="alert info" style="margin-top:8px"><strong>Comparação normal:</strong> velocidade aórtica &gt; pulmonar ao longo de toda gestação (apesar de AP ter maior diâmetro). Inversão dessa relação pode indicar obstrução aórtica.</div>
+      </div>
+      <div class="block">
+        <div class="block-title">Achados suspeitos</div>
+        <ul class="lista">
+          <li><strong>Velocidade &gt; 100–120 cm/s + turbulência:</strong> estenose pulmonar</li>
+          <li><strong>Ausência de fluxo:</strong> atresia pulmonar — confirmar com Doppler colorido</li>
+          <li><strong>Velocidade muito baixa + VD hipertrófico:</strong> estenose pulmonar crítica</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ DIAGNÓSTICO DIFERENCIAL ═══════════════════════════════════ -->
+  <div class="section-label">Diagnóstico diferencial — cardiopatias críticas</div>
+
+  <!-- 11. Cardiopatia crítica canal-dependente -->
+  <div class="item coral" data-search="cardiopatia crítica canal-dependente canal arterial ducto prostaglandina SHCE coarctação atresia">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">11</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Cardiopatias críticas canal-dependentes</div>
+        <div class="item-sub">Dependentes do ducto arterioso em vida pós-natal · Emergência neonatal</div>
+      </div>
+      <span class="item-time">16:51</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Conceito</div>
+        <div class="alert danger"><strong>Cardiopatia canal-dependente:</strong> circulação sistêmica ou pulmonar do RN depende do canal arterial permanecer aberto. O fechamento fisiológico do ducto nas primeiras horas/dias de vida leva a colapso hemodinâmico catastrófico. <strong>Diagnóstico pré-natal = salva vidas.</strong></div>
+      </div>
+      <div class="block">
+        <div class="block-title">Dependência pulmonar (fluxo pulmonar via ducto)</div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            Atresia pulmonar com septo íntegro (APSI)
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Valva pulmonar atrésica — sem fluxo anterógrado no tronco pulmonar</li>
+              <li>VD pequeno e hipertrófico; tricúspide hipoplásica ou com regurgitação maciça</li>
+              <li>Circulação pulmonar via ducto (da aorta → AP retrogrado)</li>
+              <li>Doppler colorido: fluxo reverso no tronco pulmonar</li>
+              <li>Conduta pós-natal: prostaglandina E1 imediata + valvuloplastia ou BT-shunt</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            Estenose pulmonar crítica
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Valva pulmonar gravemente obstruída; fluxo anterógrado mínimo e muito turbulento</li>
+              <li>VD pode ser normal ou hipertrófico</li>
+              <li>Conduta: valvuloplastia pulmonar por cateter</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            Atresia tricúspide com grande artéria normal
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>VD hipoplásico, sem valva tricúspide visualizável</li>
+              <li>Fluxo pulmonar pode depender de CIA + CIV + ducto</li>
+              <li>Fisiologia univentricular → paliação cirúrgica em 3 etapas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">Dependência sistêmica (fluxo sistêmico via ducto)</div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            Síndrome do coração esquerdo hipoplásico (SHCE)
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>VE muito pequeno, aorta ascendente hipoplásica, mitral e/ou aórtica atrésica ou hipoplásica</li>
+              <li>Fluxo sistêmico via ducto (da AP → aorta descendente e reverso na aorta ascendente)</li>
+              <li>Doppler colorido: fluxo reverso na aorta ascendente e arco (da AP via ducto)</li>
+              <li>4C mostra enorme assimetria: VD dominante, VE filiforme</li>
+              <li>Conduta: Norwood (neonatal) → Glenn (6m) → Fontan (3–4a)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            Coarctação de aorta crítica
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Obstrução severa no istmo aórtico — perfusão da metade inferior do corpo via ducto</li>
+              <li>Achados fetais: assimetria VD&gt;VE, istmo estreito, arco hipoplásico</li>
+              <li>Pós-natal: choque com fechamento do ducto; diagnóstico pré-natal evita mortalidade</li>
+              <li>Conduta: correção cirúrgica na primeira semana de vida</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sub-item">
+          <div class="sub-header" onclick="toggleSub(this)">
+            Estenose aórtica crítica / Interrupção do arco aórtico
+            <svg class="sub-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="sub-body">
+            <ul class="lista">
+              <li>Estenose crítica: velocidade muito elevada na valva aórtica, VE dilatado/hipertrófico</li>
+              <li>Interrupção do arco: ausência de continuidade entre arco e aorta descendente</li>
+              <li>Associada a 22q11 (tipo B — entre carótidas e subclávias)</li>
+              <li>Ambas: circulação sistêmica distal depende do ducto</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. Cardiomiopatias e arritmias -->
+  <div class="item coral" data-search="cardiomiopatia arritmia bloqueio AV taquicardia bradicardia hidropisia fetal">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">12</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Cardiomiopatias e arritmias fetais</div>
+        <div class="item-sub">Diagnóstico diferencial · Hidropisia · Bloqueio AV</div>
+      </div>
+      <span class="item-time">~50:00</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Cardiomiopatias fetais</div>
+        <ul class="lista">
+          <li><strong>Hipertrófica:</strong> diabetes mellitus gestacional (cardiomiopatia diabética), hiperinsulinemia fetal, depósitos de glicogênio (Pompe)</li>
+          <li><strong>Dilatada:</strong> miocardite viral, erros inatos do metabolismo, idiopática</li>
+          <li><strong>Achados:</strong> câmaras dilatadas, função sistólica reduzida, insuficiência das valvas AV, hidropisia</li>
+          <li><strong>Avaliação funcional:</strong> índice de desempenho miocárdico (MPI/Tei index) no Doppler pulsado</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-title">Arritmias fetais — principais</div>
+        <div class="block-grid">
+          <div class="chip"><strong>ESV/ESA</strong><small>extrassístoles — mais comuns, benignas em &gt;95%</small></div>
+          <div class="chip"><strong>TSVP</strong><small>taquicardia supraventricular paroxística — FC &gt;200bpm</small></div>
+          <div class="chip"><strong>Flutter atrial</strong><small>FC atrial 300-450bpm, razão AV variável</small></div>
+          <div class="chip"><strong>Bloqueio AV 3°</strong><small>anti-Ro/La (lúpus, Sjögren); FC 40–60bpm</small></div>
+        </div>
+        <div class="alert warn" style="margin-top:8px"><strong>Hidropisia por arritmia:</strong> taquicardia sustentada &gt;200bpm leva a insuficiência cardíaca congestiva fetal → hidropisia. Tratamento via mãe (digoxina, flecainida, sotalol) é possível e eficaz se diagnosticado a tempo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. Laudo e conduta -->
+  <div class="item amber" data-search="laudo conclusão conduta resultado normal suspeita diagnóstico encaminhamento">
+    <div class="item-header" onclick="toggle(this)">
+      <div class="item-num">13</div>
+      <div class="item-title-wrap">
+        <div class="item-title">Laudo e conduta pós-diagnóstico</div>
+        <div class="item-sub">Categorias de resultado · Encaminhamento · Planejamento perinatal</div>
+      </div>
+      <span class="item-time">~55:00</span>
+      <svg class="item-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="item-body">
+      <div class="block">
+        <div class="block-title">Categorias do resultado</div>
+        <div class="block-grid">
+          <div class="chip" style="border-color:var(--green);background:var(--green-dim)"><strong style="color:var(--green)">Normal</strong><small>todas as janelas normais; retornar ao pré-natal habitual</small></div>
+          <div class="chip" style="border-color:var(--amber);background:var(--amber-dim)"><strong style="color:var(--amber)">Suspeita / inconclusivo</strong><small>janela inadequada ou achado inespecífico → repetir em 2–4 semanas</small></div>
+          <div class="chip" style="border-color:var(--coral);background:var(--coral-dim)"><strong style="color:var(--coral)">Alterado — sem complexidade</strong><small>achado isolado; acompanhamento com cardiologista pediátrico</small></div>
+          <div class="chip" style="border-color:var(--red);background:var(--red-dim)"><strong style="color:var(--red)">Cardiopatia complexa / crítica</strong><small>encaminhamento imediato para centro de referência</small></div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-title">Planejamento perinatal nas cardiopatias complexas</div>
+        <ul class="lista">
+          <li><strong>Definir local do parto:</strong> hospital com UTI neonatal + cardiologia pediátrica + cirurgia cardíaca</li>
+          <li><strong>Genética fetal:</strong> cariótipo / microarray (15–25% das cardiopatias estruturais têm cromosomopatia)</li>
+          <li><strong>Consulta pré-natal com cardiologista pediátrico</strong> e/ou cirurgião cardíaco pediátrico</li>
+          <li><strong>Planejamento da via de parto:</strong> na maioria, via vaginal é possível; cesárea por indicação obstétrica</li>
+          <li><strong>Canal-dependentes:</strong> acesso imediato à prostaglandina E1 na sala de parto</li>
+          <li><strong>Aconselhamento e suporte psicológico</strong> para a família</li>
+        </ul>
+      </div>
+      <div class="alert ok"><strong>Mensagem final do protocolo:</strong> um ecocardiograma fetal completo e sistemático, com todas as janelas descritas, permite diagnosticar &gt;90% das cardiopatias congênitas significativas e planejar o manejo perinatal adequado.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Protocolo Caliper — Ecocardiograma Fetal · Prof. Talita Aires &amp; Prof. Karla Pedrosa<br>
+  Caliper Escola de Imagem · <a href="https://youtu.be/DXtxDWedaTQ" target="_blank" style="color:var(--teal);text-decoration:none">Ver aula completa no YouTube ↗</a>
+</footer>
+
+<script>
+  const TOTAL = 13;
+  const opened = new Set();
+
+  function toggle(header) {
+    const item = header.parentElement;
+    const wasOpen = item.classList.contains('open');
+    item.classList.toggle('open', !wasOpen);
+    if (!wasOpen) {
+      const num = item.querySelector('.item-num')?.textContent?.trim();
+      if (num) { opened.add(num); updateProgress(); }
+    }
+  }
+
+  function toggleSub(header) {
+    const item = header.parentElement;
+    item.classList.toggle('open');
+  }
+
+  function updateProgress() {
+    const pct = Math.round((opened.size / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = opened.size + ' / ' + TOTAL;
+  }
+
+  function filterItems(val) {
+    const q = val.toLowerCase().trim();
+    document.querySelectorAll('.item').forEach(item => {
+      if (!q) { item.classList.remove('hidden'); return; }
+      const text = (item.dataset.search || '') + ' ' + (item.querySelector('.item-title')?.textContent || '') + ' ' + (item.querySelector('.item-sub')?.textContent || '');
+      item.classList.toggle('hidden', !text.toLowerCase().includes(q));
+    });
+  }
+</script>
+
+
+</body></html>
